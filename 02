@@ -1,0 +1,41 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Kakao Map</title>
+  <style>
+    html, body, #map { height:100%; margin:0; }
+    body { -webkit-font-smoothing: antialiased; }
+  </style>
+  <!-- ★ 여기 YOUR_APP_KEY 를 카카오 JavaScript 키로 바꿔주세요 -->
+  <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=YOUR_APP_KEY"></script>
+</head>
+<body>
+  <div id="map"></div>
+  <script>
+    // URL 예: ?lat=37.4979&lng=127.0276&level=3&name=%EB%8D%94%EC%9B%A8%EB%8D%94
+    const q = new URLSearchParams(location.search);
+    const lat   = parseFloat(q.get("lat")   || "37.4979");
+    const lng   = parseFloat(q.get("lng")   || "127.0276");
+    const level = parseInt(q.get("level")   || "3", 10);
+    const name  = q.get("name") || "";
+
+    const map = new kakao.maps.Map(document.getElementById("map"), {
+      center: new kakao.maps.LatLng(lat, lng),
+      level
+    });
+
+    const pos = new kakao.maps.LatLng(lat, lng);
+    const marker = new kakao.maps.Marker({ position: pos });
+    marker.setMap(map);
+
+    if (name) {
+      const iw = new kakao.maps.InfoWindow({
+        content: `<div style="padding:6px 10px;font-size:14px;white-space:nowrap;">${name}</div>`
+      });
+      iw.open(map, marker);
+    }
+  </script>
+</body>
+</html>
